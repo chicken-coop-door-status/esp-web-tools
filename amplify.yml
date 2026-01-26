@@ -4,6 +4,7 @@ frontend:
     preBuild:
       commands:
         - npm install
+        - node script/update-manifests.js
     build:
       commands:
         - script/build
