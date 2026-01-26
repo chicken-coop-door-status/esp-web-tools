@@ -1,0 +1,29 @@
+{
+  "name": "Mother Hen Egg Firmware",
+  "version": "1.0.0",
+  "new_install_prompt_erase": true,
+  "new_install_improv_wait_time": 20,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "https://web-firmware-recovery-charlies-farm.s3-us-east-2.amazonaws.com/bootloader.bin",
+          "offset": 0
+        },
+        {
+          "path": "https://web-firmware-recovery-charlies-farm.s3-us-east-2.amazonaws.com/partition-table.bin",
+          "offset": 45056
+        },
+        {
+          "path": "https://web-firmware-recovery-charlies-farm.s3-us-east-2.amazonaws.com/ota_data_initial.bin",
+          "offset": 102400
+        },
+        {
+          "path": "https://web-firmware-recovery-charlies-farm.s3-us-east-2.amazonaws.com/egg.bin",
+          "offset": 131072
+        }
+      ]
+    }
+  ]
+}
