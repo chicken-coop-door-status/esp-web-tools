@@ -2,7 +2,11 @@
 set -e
 
 cd "$(dirname "$0")/.."
-echo 'export const version =' `jq .version package.json`";" > src/version.ts
+node - <<'NODE'
+const fs = require("fs");
+const { version } = require("../package.json");
+fs.writeFileSync("src/version.ts", `export const version = ${JSON.stringify(version)};`);
+NODE
 
 rm -rf dist
 NODE_ENV=production npm exec -- tsc
