@@ -8,19 +8,19 @@
       "chipFamily": "ESP32-S3",
       "parts": [
         {
-          "path": "https://web-firmware-recovery-charlies-farm.s3-us-east-2.amazonaws.com/bootloader.bin",
+          "path": "https://ota-charlies-farm.s3.us-east-2.amazonaws.com/egg/latest/bootloader.bin",
           "offset": 0
         },
         {
-          "path": "https://web-firmware-recovery-charlies-farm.s3-us-east-2.amazonaws.com/partition-table.bin",
+          "path": "https://ota-charlies-farm.s3.us-east-2.amazonaws.com/egg/latest/partition-table.bin",
           "offset": 45056
         },
         {
-          "path": "https://web-firmware-recovery-charlies-farm.s3-us-east-2.amazonaws.com/ota_data_initial.bin",
+          "path": "https://ota-charlies-farm.s3.us-east-2.amazonaws.com/egg/latest/ota_data_initial.bin",
           "offset": 102400
         },
         {
-          "path": "https://web-firmware-recovery-charlies-farm.s3-us-east-2.amazonaws.com/egg.bin",
+          "path": "https://ota-charlies-farm.s3.us-east-2.amazonaws.com/egg/latest/egg.bin",
           "offset": 131072
         }
       ]

@@ -19,37 +19,68 @@
     }
   ],
   "notes": [
-    "Binaries and manifests live in the us-east-2 S3 bucket with a fixed partition table (OTA table at 0x19000) to match the egg layout.",
+    "Binaries and manifests live in the us-east-2 S3 bucket with a fixed partition table (OTA table at 0x19000) to match the Mother Hen partition layout.",
     "Recovery flow preserves provisioning if you leave the Erase checkbox unchecked; factory reset requires reprovisioning.",
     "Keep a provisioning phone or tablet handy when doing a factory reset so the device can be reprovisioned immediately."
   ],
-  "device": {
-    "id": "mother-hen-egg",
-    "name": "Mother Hen Egg",
-    "tagline": "Field-ready recovery for damaged or locked eggs.",
-    "chipFamily": "ESP32-S3",
-    "description": "A tailor-made ESP Web Tools experience that bundles two flash paths (preserve data or factory reset) alongside field guidance and manifest validation.",
-    "manifests": [
-      {
-        "id": "egg-recovery",
-        "title": "Recover (keep provisioning)",
-        "summary": "If you leave the Erase checkbox untouched, the EEPROM, provisioning flags, and secure cert stay intact. This is the go-to choice when the device recently lost wifi or crashed.",
-        "note": "The dialog will warn about erasing data; just skip that step unless you need to start over.",
-        "badge": "Data-safe",
-        "cta": "Run recovery",
-        "manifest": "static/manifests/mother-hen-egg/recover.json",
-        "versionLabel": "v1.0.0"
-      },
-      {
-        "id": "egg-factory-reset",
-        "title": "Factory reset (reprovision)",
-        "summary": "Tick the Erase box to fully wipe `thing_name`, secure certs, and Wi-Fi entries so provisioning can run from scratch.",
-        "note": "Expect to reprovision the device after flashing; keep POP/code ready.",
-        "badge": "Factory clean",
-        "cta": "Factory reset",
-        "manifest": "static/manifests/mother-hen-egg/factory-reset.json",
-        "versionLabel": "v1.0.0"
-      }
-    ]
-  }
+  "devices": [
+    {
+      "id": "mother-hen-egg",
+      "name": "Mother Hen Egg",
+      "tagline": "Field-ready recovery for damaged or locked eggs.",
+      "chipFamily": "ESP32-S3",
+      "description": "A tailor-made ESP Web Tools experience that bundles two flash paths (preserve data or factory reset) alongside field guidance and manifest validation.",
+      "manifests": [
+        {
+          "id": "egg-recovery",
+          "title": "Recover (keep provisioning)",
+          "summary": "If you leave the Erase checkbox untouched, the EEPROM, provisioning flags, and secure cert stay intact. This is the go-to choice when the device recently lost wifi or crashed.",
+          "note": "The dialog will warn about erasing data; just skip that step unless you need to start over.",
+          "badge": "Data-safe",
+          "cta": "Run recovery",
+          "manifest": "static/manifests/mother-hen-egg/recover.json",
+          "versionLabel": "v1.0.0"
+        },
+        {
+          "id": "egg-factory-reset",
+          "title": "Factory reset (reprovision)",
+          "summary": "Tick the Erase box to fully wipe `thing_name`, secure certs, and Wi-Fi entries so provisioning can run from scratch.",
+          "note": "Expect to reprovision the device after flashing; keep POP/code ready.",
+          "badge": "Factory clean",
+          "cta": "Factory reset",
+          "manifest": "static/manifests/mother-hen-egg/factory-reset.json",
+          "versionLabel": "v1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "mother-hen-controller",
+      "name": "Mother Hen Controller",
+      "tagline": "Field-ready recovery for damaged or locked controllers.",
+      "chipFamily": "ESP32-S3",
+      "description": "ESP Web Tools recovery for Mother Hen controllers with two flash paths (preserve data or factory reset) alongside field guidance and manifest validation.",
+      "manifests": [
+        {
+          "id": "controller-recovery",
+          "title": "Recover (keep provisioning)",
+          "summary": "If you leave the Erase checkbox untouched, the EEPROM, provisioning flags, and secure cert stay intact. This is the go-to choice when the device recently lost wifi or crashed.",
+          "note": "The dialog will warn about erasing data; just skip that step unless you need to start over.",
+          "badge": "Data-safe",
+          "cta": "Run recovery",
+          "manifest": "static/manifests/mother-hen-controller/recover.json",
+          "versionLabel": "v1.0.0"
+        },
+        {
+          "id": "controller-factory-reset",
+          "title": "Factory reset (reprovision)",
+          "summary": "Tick the Erase box to fully wipe `thing_name`, secure certs, and Wi-Fi entries so provisioning can run from scratch.",
+          "note": "Expect to reprovision the device after flashing; keep POP/code ready.",
+          "badge": "Factory clean",
+          "cta": "Factory reset",
+          "manifest": "static/manifests/mother-hen-controller/factory-reset.json",
+          "versionLabel": "v1.0.0"
+        }
+      ]
+    }
+  ]
 }

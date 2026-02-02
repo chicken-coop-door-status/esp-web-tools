@@ -241,6 +241,66 @@
         word-break: break-all;
       }
 
+      .device-selector-btn {
+        width: 100%;
+        padding: 16px 20px;
+        border: 2px solid var(--card-border);
+        border-radius: 12px;
+        background: var(--card-bg);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .device-selector-btn:hover {
+        border-color: rgba(77, 231, 178, 0.4);
+        background: rgba(77, 231, 178, 0.05);
+      }
+
+      .device-selector-btn.selected {
+        border-color: var(--accent);
+        background: rgba(77, 231, 178, 0.1);
+        box-shadow: 0 0 0 1px var(--accent);
+      }
+
+      .device-selector-card {
+        border-radius: 20px;
+        padding: 22px;
+        background: var(--card-bg);
+        border: 2px solid var(--card-border);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        backdrop-filter: blur(12px);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .device-selector-card:hover {
+        border-color: rgba(77, 231, 178, 0.4);
+        background: rgba(77, 231, 178, 0.05);
+      }
+
+      .device-selector-card.selected {
+        border-color: var(--accent);
+        background: rgba(77, 231, 178, 0.1);
+        box-shadow: 0 0 0 1px var(--accent);
+      }
+
+      .device-selector-card h3 {
+        margin: 0;
+        font-size: 1.3rem;
+      }
+
+      .device-selector-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
       .section-heading {
         display: flex;
         justify-content: space-between;
@@ -300,32 +360,50 @@
     <main class="page">
       <header class="hero">
         <span class="pill">Mother Hen Field Tools</span>
-        <h1>ESP Web Tools – Egg Recovery</h1>
+        <h1 id="hero-title">ESP Web Tools – Device Recovery</h1>
         <p id="hero-description" class="hero-subtitle">
-          Field-focused instructions for Chrome/Edge recovery of ESP32-S3 eggs.
+          Field-focused instructions for Chrome/Edge recovery of ESP32-S3 devices.
         </p>
         <p id="preflight" class="preflight-note">
           Preflight: the browser checks for WebSerial support before continuing.
         </p>
         <div class="hero-stats">
           <div>
+            <span class="stat-label">Device type</span>
+            <strong id="device-type-display">Select device below</strong>
+          </div>
+          <div>
             <span class="stat-label">Chip family</span>
             <strong id="chip-family">ESP32-S3</strong>
           </div>
           <div>
             <span class="stat-label">Manifest host</span>
-            <strong>web-firmware-recovery-charlies-farm (us-east-2)</strong>
+            <strong>ota-charlies-farm (us-east-2)</strong>
           </div>
         </div>
       </header>
+
+      <section class="device-selector-section">
+        <header>
+          <h2>Device selection</h2>
+          <p>
+            Choose which Mother Hen device you're recovering, then follow the field checklist and flash instructions below.
+          </p>
+        </header>
+        <div id="device-selector-grid" class="manifest-grid">
+          <div class="manifest-card">
+            <p>Loading devices…</p>
+          </div>
+        </div>
+      </section>
 
       <section class="field-checklist-section">
         <header>
           <h2>Field checklist</h2>
           <p>
-            Follow the steps below before you plug the egg into your laptop. The
+            Follow the steps below before you plug the device into your laptop. The
             UI enforces the chip family and will warn if the browser or cable
-            doesn’t expose WebSerial.
+            doesn't expose WebSerial.
           </p>
         </header>
         <div class="field-checklist" id="field-checklist-grid">
@@ -379,11 +457,17 @@
       const configUrl = "config/eggs.json";
       const manifestGrid = document.querySelector("#manifest-grid");
       const checklistGrid = document.querySelector("#field-checklist-grid");
+      const deviceSelectorGrid = document.querySelector("#device-selector-grid");
       const notesElement = document.querySelector("#notes-list");
       const errorBanner = document.querySelector("#error-message");
       const preflightEl = document.querySelector("#preflight");
       const heroDescription = document.querySelector("#hero-description");
+      const heroTitle = document.querySelector("#hero-title");
       const chipFamilyEl = document.querySelector("#chip-family");
+      const deviceTypeDisplay = document.querySelector("#device-type-display");
+      
+      let currentConfig = null;
+      let selectedDevice = null;
 
       const loadInstallButton = () =>
         import(
@@ -395,6 +479,48 @@
         );
 
       const absolute = (path) => new URL(path, location.href).toString();
+
+      const renderDeviceSelector = (devices) => {
+        deviceSelectorGrid.innerHTML = "";
+        devices.forEach((device) => {
+          const card = document.createElement("article");
+          card.className = "device-selector-card";
+          card.setAttribute("data-device-id", device.id);
+          card.innerHTML = `
+            <h3>${device.name}</h3>
+            <p>${device.tagline}</p>
+          `;
+          card.addEventListener("click", () => selectDevice(device.id));
+          deviceSelectorGrid.append(card);
+        });
+      };
+
+      const selectDevice = (deviceId) => {
+        if (!currentConfig) return;
+        
+        const device = currentConfig.devices.find(d => d.id === deviceId);
+        if (!device) return;
+        
+        selectedDevice = device;
+        
+        // Update UI selection state
+        document.querySelectorAll(".device-selector-card").forEach(card => {
+          if (card.getAttribute("data-device-id") === deviceId) {
+            card.classList.add("selected");
+          } else {
+            card.classList.remove("selected");
+          }
+        });
+        
+        // Update hero section
+        heroTitle.textContent = `ESP Web Tools – ${device.name} Recovery`;
+        heroDescription.textContent = device.description;
+        chipFamilyEl.textContent = device.chipFamily;
+        deviceTypeDisplay.textContent = device.name;
+        
+        // Render manifests for selected device
+        renderManifests(device);
+      };
 
       const renderChecklist = (items) => {
         checklistGrid.innerHTML = "";
@@ -475,13 +601,20 @@
             throw new Error(`Config request failed (${resp.status})`);
           }
           const config = await resp.json();
-          const device = config.device;
-          chipFamilyEl.textContent = device.chipFamily;
-          heroDescription.textContent = device.description;
+          currentConfig = config;
+          
           preflightEl.textContent = config.preflight;
           renderChecklist(config.fieldChecklist);
-          renderManifests(device);
           renderNotes(config.notes);
+          
+          // Render device selector
+          if (config.devices && config.devices.length > 0) {
+            renderDeviceSelector(config.devices);
+            // Auto-select first device
+            selectDevice(config.devices[0].id);
+          } else {
+            showError("No devices configured in the configuration file.");
+          }
         } catch (err) {
           console.error(err);
           showError("Unable to load the field configuration. The manifests cannot render.");

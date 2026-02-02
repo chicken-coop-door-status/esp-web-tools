@@ -1,0 +1,29 @@
+{
+  "name": "Mother Hen Controller Firmware",
+  "version": "1.0.0",
+  "new_install_prompt_erase": true,
+  "new_install_improv_wait_time": 20,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "https://ota-charlies-farm.s3.us-east-2.amazonaws.com/controller/latest/bootloader.bin",
+          "offset": 0
+        },
+        {
+          "path": "https://ota-charlies-farm.s3.us-east-2.amazonaws.com/controller/latest/partition-table.bin",
+          "offset": 45056
+        },
+        {
+          "path": "https://ota-charlies-farm.s3.us-east-2.amazonaws.com/controller/latest/ota_data_initial.bin",
+          "offset": 102400
+        },
+        {
+          "path": "https://ota-charlies-farm.s3.us-east-2.amazonaws.com/controller/latest/controller.bin",
+          "offset": 131072
+        }
+      ]
+    }
+  ]
+}
