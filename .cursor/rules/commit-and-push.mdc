@@ -1,5 +1,5 @@
 ---
-description: When user asks to commit/push, use feat: prefix so releases propagate
+description: "When user asks to commit/push, use feat: prefix so releases propagate"
 alwaysApply: true
 ---
 

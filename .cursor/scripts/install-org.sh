@@ -72,6 +72,12 @@ for repo in $repos; do
   if [ ! -d "$dir" ]; then
     echo "Cloning $ORG/$repo (shallow, sparse for .cursor only)..."
     git clone --depth 1 --no-checkout "https://github.com/$ORG/$repo.git" "$dir"
+    if ! git -C "$dir" rev-parse HEAD 2>/dev/null; then
+      echo "  Empty repo, skipping"
+      rm -rf "$dir"
+      ((count++)) || true
+      continue
+    fi
     default_branch=$(git -C "$dir" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|^refs/remotes/origin/||') || default_branch="main"
     git -C "$dir" sparse-checkout init --cone
     git -C "$dir" sparse-checkout set .cursor
@@ -105,12 +111,16 @@ for repo in $repos; do
             git -C "$pr_worktree" add -A
             git -C "$pr_worktree" commit -m "Propose .cursor changes from $ORG/$repo"
             pr_repo_url=$(git -C "$pr_worktree" remote get-url origin)
-            pr_repo_slug=$(echo "$pr_repo_url" | sed -E 's|^(https?://[^/]+/|git@[^:]+:)||' | sed 's|\.git$||')
+            pr_repo_slug=$(echo "$pr_repo_url" | sed -E 's#^(https?://[^/]+/|git@[^:]+:)##' | sed 's#\.git$##')
             if git -C "$pr_worktree" push -u origin "$from_org_branch" 2>/dev/null; then
-              gh pr create --repo "$pr_repo_slug" \
+              if (cd "$CURSOR_SETTINGS_ROOT" && gh pr create --repo "$pr_repo_slug" \
+                --head "$from_org_branch" \
                 --title "Propose .cursor changes from $ORG/$repo" \
-                --body "Changes in .cursor from $ORG/$repo (proposed for master)."
-              echo "  Opened PR from branch $from_org_branch"
+                --body "Changes in .cursor from $ORG/$repo (proposed for master)."); then
+                echo "  Opened PR from branch $from_org_branch"
+              else
+                echo "  PR creation failed (continuing anyway)"
+              fi
             else
               echo "  Push failed (no write access?); PR not created"
             fi
