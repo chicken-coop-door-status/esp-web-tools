@@ -30,4 +30,3 @@ Use these guardrails when adding or changing features to minimize App Store revi
 
 - **No guarantees**: Avoid “all clear”, “safe/secure/protected/prevents/ensures”, or absolute readiness claims. Prefer neutral, observable status + timestamps/freshness.
 - **Account flows**: If login is required, ensure App Review can access the app (test credentials or a review/demo mode) and provide clear error states.
-
