@@ -183,6 +183,6 @@ bats tests/install.bats
 
 Compiled from: C2DS-brood, C2DS-bootstrap, C2DS-cognator, C2DS-controller, C2DS-egg, C2DS-clutch,
 gecl-app-common, GGG-esp32c3-controller, ELSL-aws-iot-hallway-bathroom-lights,
-c2ds-mobile-app, C2DS-mother-hen-api-stack, ESPConnect, dot_shellrc.
+c2ds_mobile_provisioning_app, C2DS-mother-hen-api-stack, ESPConnect, dot_shellrc.
 
 [Changelog](docs/CHANGELOG.md)

@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Language-Specific Rules
 
-Compiled from C2DS-cognator, c2ds-mobile-app, C2DS-mother-hen-api-stack, ESPConnect AGENTS.md.
+Compiled from C2DS-cognator, c2ds_mobile_provisioning_app, C2DS-mother-hen-api-stack, ESPConnect AGENTS.md.
 
 **Note:** Flutter/Dart and TypeScript/Vue sections include defaults from Mother Hen mobile app and ESPConnect.
 Omit or adapt project-specific items (e.g. door states, Vuetify) for other projects.

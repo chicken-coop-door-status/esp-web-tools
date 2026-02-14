@@ -5,7 +5,7 @@ alwaysApply: true
 
 # CI Deploy Verification
 
-Compiled from C2DS-brood, C2DS-bootstrap, GGG-esp32c3-controller, c2ds-mobile-app AGENTS.md.
+Compiled from C2DS-brood, C2DS-bootstrap, GGG-esp32c3-controller, c2ds_mobile_provisioning_app AGENTS.md.
 
 ## Mandatory Rule
 
