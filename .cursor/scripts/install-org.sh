@@ -61,7 +61,7 @@ echo ""
 mkdir -p "$BASE_DIR/$ORG"
 cd "$BASE_DIR/$ORG"
 
-repos=$(gh repo list "$ORG" --json name -q '.[].name' 2>/dev/null) || {
+repos=$(gh repo list "$ORG" --json name,isArchived -q '.[] | select(.isArchived == false) | .name' 2>/dev/null) || {
   echo "error: failed to list repos (check org name and gh auth)"
   exit 1
 }
